@@ -1,24 +1,28 @@
 #!/usr/bin/python3
+import json
 from models.base_model import BaseModel
 
 """
-   recreate a BaseModel from another one by using a 
+   recreate a BaseModel from another one by using a
    dictionary representation
 """
 
-class FileStorage(BaseModel):
+
+class FileStorage:
     """
-    A class FileStorage that serializes instances to a JSON file and deserializes JSON file to 
+    A class FileStorage that serializes instances to a JSON
+    file and deserializes JSON file to
     instances
 
     __file_path: string - path to the JSON file (ex: file.json)
-    __objects: dictionary - empty but will store all objects by <class name>.id (ex: to store a
-    BaseModel object with id=12121212, the key will be BaseModel.12121212)
+    __objects: dictionary - empty but will store all objects by
+    <class name>.id (ex: to store a
+    BaseModel object with id=12121212, the key will be
+    BaseModel.12121212)
 
     """
     __file_path = "file.json"
-    __objects   = {}
-    
+    __objects = {}
 
     """
        def __init__(self):
@@ -29,22 +33,23 @@ class FileStorage(BaseModel):
 
     def all(self):
         """   string - path to the JSON file """
-        return BaseModle.to_Dict()
+        return BaseModel.to_dict(self)
 
-    @property
     def new(self, obj):
-        """ sets in __objects the obj with key """
-        return self.obj
+        """ sets in __objects the obj with key <obj class name>.id """
+        if obj:
+            data = '{}.{}'.format(obj.__class__.__name__, obj.id)
+            self.__objects[data] = obj
 
-    @new.setter
-    def new(self, obj):
-        self.obj = __objects
-        
     def save(self):
         """ serializes __objects to the JSON file """
-        with open(self.__file_path, "a")as f:
-            json.dump(all(), f)
-        
+        jdata = {}
+
+        for i, j in self.__objects.item():
+            jdata[i] = j.to_dict()
+        with open(self.__file_path, "w")as f:
+            json.dump(jdata, f)
+
     def reload(self):
         """  deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists ; otherwise, do nothing.
@@ -52,6 +57,9 @@ class FileStorage(BaseModel):
         """
         try:
             with open(self.__file_path, 'r') as f:
-                self.__object = json.load(f)
+                new_obj = json.load(f)
+            for key, val in new_obj.items():
+                obj = self.class_dict[val['__class__']](**val)
+                self.__objects[key] = obj
         except FileNotFoundError:
-            pass   
+            pass
