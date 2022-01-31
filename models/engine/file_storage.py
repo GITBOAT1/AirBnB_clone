@@ -33,7 +33,7 @@ class FileStorage:
 
     def all(self):
         """   string - path to the JSON file """
-        return BaseModel.to_dict(self)
+        return self.__objects
 
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id """
@@ -47,7 +47,7 @@ class FileStorage:
 
         for i, j in self.__objects.item():
             jdata[i] = j.to_dict()
-        with open(self.__file_path, "w")as f:
+        with open(self.__file_path, "w") as f:
             json.dump(jdata, f)
 
     def reload(self):
