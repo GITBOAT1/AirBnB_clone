@@ -21,8 +21,9 @@ class FileStorage:
     BaseModel.12121212)
 
     """
-    __file_path = "file.json"
+    __file_path = 'file.json'
     __objects = {}
+
 
     """
        def __init__(self):
@@ -47,7 +48,7 @@ class FileStorage:
 
         for i, j in self.__objects.item():
             jdata[i] = j.to_dict()
-        with open(self.__file_path, "w") as f:
+        with open(self.__file_path, 'a') as f:
             json.dump(jdata, f)
 
     def reload(self):
