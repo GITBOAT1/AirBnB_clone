@@ -29,8 +29,8 @@ class BaseModel:
                     setattr(self, key, val)
         else:
             self.id = str(uuid4())
-            self.created_at = datetime.datetime.today()
-            self.updated_at = datetime.datetime.today()
+            self.created_at = datetime.today()
+            self.updated_at = datetime.today()
             models.storage.new(self)
 
     def __str__(self):
@@ -52,7 +52,7 @@ class BaseModel:
         keys = {}
         keys["__class__"] = self.__class__.__name__
         for i, val in self.__dict__.items():
-            if isinstance(val, (datetime.datetime, )):
+            if isinstance(val, (datetime, )):
                 keys[i] = val.isoformat()
             else:
                 keys[i] = val
