@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 import json
 from models.base_model import BaseModel
-
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 """
    recreate a BaseModel from another one by using a
    dictionary representation
@@ -23,7 +28,9 @@ class FileStorage:
     """
     __file_path = 'file.json'
     __objects = {}
-
+    class_dict = {"BaseModel": BaseModel, "User": User, "Place": Place,
+                  "Amenity": Amenity, "City": City, "Review": Review,
+                  "State": State}
 
     """
        def __init__(self):
@@ -45,10 +52,11 @@ class FileStorage:
     def save(self):
         """ serializes __objects to the JSON file """
         jdata = {}
-
+        print("hollo"*3)
         for i, j in self.__objects.item():
             jdata[i] = j.to_dict()
-        with open(self.__file_path, 'a') as f:
+            print("{} _> fom i".format(i))
+        with open(self.__file_path, 'w') as f:
             json.dump(jdata, f)
 
     def reload(self):
